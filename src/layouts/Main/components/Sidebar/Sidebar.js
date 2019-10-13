@@ -9,6 +9,7 @@ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
 import { Profile, SidebarNav } from './components';
+import { utilityProj } from 'helpers';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -38,16 +39,11 @@ const Sidebar = props => {
 
   const classes = useStyles();
 
-  const pages = [
+  let pages = [
     {
       title: 'Dashboard',
       href: '/dashboard',
       icon: <DashboardIcon />
-    },
-    {
-      title: 'Employees',
-      href: '/users',
-      icon: <PeopleIcon />
     },
     {
       title: 'Products',
@@ -60,6 +56,15 @@ const Sidebar = props => {
       icon: <AccountBoxIcon />
     }
   ];
+
+  let getLoggedInUser = utilityProj.getUserSession()
+  if (getLoggedInUser.userType === 'admin') {
+    pages.splice(1, 0, {
+      title: 'Employees',
+      href: '/users',
+      icon: <PeopleIcon />
+    })
+  }
 
   return (
     <Drawer

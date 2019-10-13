@@ -1,2 +1,3 @@
 export const ADD_USER = 'ADD_USER'
 export const ADD_PRODUCT = 'ADD_PRODUCT'
+export const UPDATE_PRODUCT_OF_THE_DAY = 'UPDATE_PRODUCT_OF_THE_DAY'

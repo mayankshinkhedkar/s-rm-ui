@@ -1,4 +1,4 @@
-import { ADD_PRODUCT } from '../constants'
+import { ADD_PRODUCT, UPDATE_PRODUCT_OF_THE_DAY } from '../constants'
 
 let products = [
   {
@@ -48,9 +48,22 @@ let products = [
 export default function productsReducer(state = products, action) {
   switch (action.type) {
     case ADD_PRODUCT:
+
       let newProducts = state;
       newProducts.push(action.data);
+
       return newProducts
+
+    case UPDATE_PRODUCT_OF_THE_DAY:
+
+      let newProductOfDay = state;
+      let getProductIndex = newProductOfDay.findIndex(obj => obj.isProductOfTheDEaey === true)
+      newProductOfDay[getProductIndex].isProductOfTheDEaey = false
+      getProductIndex = newProductOfDay.findIndex(obj => obj.id === action.data)
+      newProductOfDay[getProductIndex].isProductOfTheDEaey = true
+
+      return newProductOfDay
+
     default:
       return state
   }

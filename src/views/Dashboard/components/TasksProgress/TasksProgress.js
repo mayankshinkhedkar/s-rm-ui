@@ -6,11 +6,9 @@ import {
   Card,
   CardContent,
   Grid,
-  Typography,
-  Avatar,
-  LinearProgress
+  Typography
 } from '@material-ui/core';
-import InsertChartIcon from '@material-ui/icons/InsertChartOutlined';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,9 +37,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TasksProgress = props => {
-  const { className, ...rest } = props;
+  const { className, products, ...rest } = props;
 
   const classes = useStyles();
+
+  const productOfToday = products.filter(obj => obj.isProductOfTheDEaey)
 
   return (
     <Card
@@ -60,21 +60,13 @@ const TasksProgress = props => {
               gutterBottom
               variant="body2"
             >
-              TASKS PROGRESS
+              Product of Today
             </Typography>
-            <Typography variant="h3">75.5%</Typography>
-          </Grid>
-          <Grid item>
-            <Avatar className={classes.avatar}>
-              <InsertChartIcon className={classes.icon} />
-            </Avatar>
+            {
+              productOfToday.length > 0 && <Typography variant="h3">{productOfToday[0].productName}</Typography>
+            }
           </Grid>
         </Grid>
-        <LinearProgress
-          className={classes.progress}
-          value={75.5}
-          variant="determinate"
-        />
       </CardContent>
     </Card>
   );
@@ -84,4 +76,12 @@ TasksProgress.propTypes = {
   className: PropTypes.string
 };
 
-export default TasksProgress;
+function mapStateToProps(state) {
+  return {
+    products: state.products || []
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(TasksProgress)

@@ -7,6 +7,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +18,7 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { updateProductOfTheDay } from 'redux/actions/productActions';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -36,10 +38,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductsTable = props => {
-  const { className, products } = props;
+  const { className, products, updateProductOfTheDay, isAdmin } = props;
 
   const classes = useStyles();
 
+  const [selectedProduct, setSelectedProduct] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
@@ -52,6 +55,11 @@ const ProductsTable = props => {
     setPage(0);
   };
 
+  const handleSelectOne = (event, id) => {
+    setSelectedProduct(id);
+    updateProductOfTheDay(id);
+  };
+
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -62,29 +70,39 @@ const ProductsTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
+                  <TableCell>Product of the Day</TableCell>
                   <TableCell>Product Name</TableCell>
                   <TableCell>Quantity</TableCell>
                   <TableCell>Price</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products.slice(rowsPerPage * page, rowsPerPage + page).map((user, index) => (
+                {products.slice(rowsPerPage * page, rowsPerPage + page).map((product, index) => (
                   <TableRow
                     className={classes.tableRow}
                     hover
                     key={index}
                   >
                     <TableCell>
+                      <Checkbox
+                        checked={selectedProduct === product.id || product.isProductOfTheDEaey}
+                        color="primary"
+                        onChange={event => handleSelectOne(event, product.id)}
+                        value="true"
+                        disabled={!isAdmin}
+                      />
+                    </TableCell>
+                    <TableCell>
                       <div className={classes.nameContainer}>
-                        <Typography variant="body1">{user.productName}</Typography>
+                        <Typography variant="body1">{product.productName}</Typography>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className={classes.nameContainer}>
-                        <Typography variant="body1">{user.quantity}</Typography>
+                        <Typography variant="body1">{product.quantity}</Typography>
                       </div>
                     </TableCell>
-                    <TableCell>{user.price}</TableCell>
+                    <TableCell>{product.price}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -117,6 +135,13 @@ function mapStateToProps(state) {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    updateProductOfTheDay: (user) => dispatch(updateProductOfTheDay(user)),
+  }
+}
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(withRouter(ProductsTable))
