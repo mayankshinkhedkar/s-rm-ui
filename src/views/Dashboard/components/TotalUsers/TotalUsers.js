@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TotalUsers = props => {
-  const { className, users, ...rest } = props;
+  const { className, users } = props;
 
   const classes = useStyles();
 
@@ -49,7 +49,6 @@ const TotalUsers = props => {
 
   return (
     <Card
-      {...rest}
       className={clsx(classes.root, className)}
     >
       <CardContent>
