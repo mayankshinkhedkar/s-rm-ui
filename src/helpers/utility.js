@@ -6,7 +6,12 @@ let unsetUserSession = () => {
   sessionStorage.removeItem("loggedInUser");
 }
 
+let getUserSession = () => {
+  return JSON.parse(sessionStorage.getItem("loggedInUser"));
+}
+
 export default {
   setUserSession,
-  unsetUserSession
+  unsetUserSession,
+  getUserSession
 }

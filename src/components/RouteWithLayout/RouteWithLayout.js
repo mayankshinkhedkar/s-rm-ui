@@ -1,9 +1,28 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { utilityProj } from 'helpers';
 
 const RouteWithLayout = props => {
   const { layout: Layout, component: Component, ...rest } = props;
+
+  if (!utilityProj.getUserSession() && !["/", "/sign-in", "/sign-up"].includes(props.path)) {
+    return (
+      <Redirect
+        exact
+        from={props.path}
+        to="/sign-in"
+      />
+    )
+  } else if (utilityProj.getUserSession() && ["/", "/sign-in", "/sign-up"].includes(props.path)) {
+    return (
+      <Redirect
+        exact
+        from={props.path}
+        to="/dashboard"
+      />
+    )
+  }
 
   return (
     <Route
