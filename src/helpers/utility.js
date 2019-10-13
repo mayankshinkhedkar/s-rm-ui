@@ -1,13 +1,13 @@
 let setUserSession = (data) => {
-  sessionStorage.setItem("loggedInUser", JSON.stringify(data));
+  localStorage.setItem("loggedInUser", JSON.stringify(data));
 }
 
 let unsetUserSession = () => {
-  sessionStorage.removeItem("loggedInUser");
+  localStorage.removeItem("loggedInUser");
 }
 
 let getUserSession = () => {
-  return JSON.parse(sessionStorage.getItem("loggedInUser"));
+  return JSON.parse(localStorage.getItem("loggedInUser"));
 }
 
 export default {

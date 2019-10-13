@@ -31,19 +31,6 @@ const schema = {
     length: {
       maximum: 64
     }
-  },
-  password: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 128
-    }
-  },
-  userType: {
-    presence: { allowEmpty: false, message: 'is required' }
-  },
-  policy: {
-    presence: { allowEmpty: false, message: 'is required' },
-    checked: true
   }
 };
 
