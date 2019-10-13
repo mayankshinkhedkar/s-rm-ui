@@ -10,40 +10,34 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import { addtUser } from 'redux/actions/userActions';
+import { addProduct } from 'redux/actions/productActions';
 
 const schema = {
-  firstName: {
+  productName: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
       maximum: 32
     }
   },
-  lastName: {
+  quantity: {
     presence: { allowEmpty: false, message: 'is required' },
+    numericality: {
+      onlyInteger: true,
+      greaterThan: 0
+    },
     length: {
       maximum: 32
     }
   },
-  email: {
+  price: {
     presence: { allowEmpty: false, message: 'is required' },
-    email: true,
+    numericality: {
+      onlyInteger: true,
+      greaterThan: 0
+    },
     length: {
-      maximum: 64
+      maximum: 32
     }
-  },
-  password: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 128
-    }
-  },
-  userType: {
-    presence: { allowEmpty: false, message: 'is required' }
-  },
-  policy: {
-    presence: { allowEmpty: false, message: 'is required' },
-    checked: true
   }
 };
 
@@ -135,7 +129,7 @@ const useStyles = makeStyles(theme => ({
   policyCheckbox: {
     marginLeft: '-14px'
   },
-  AddEmployeeButton: {
+  AddProductButton: {
     margin: theme.spacing(2, 0)
   },
   formControl: {
@@ -147,8 +141,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AddEmployee = props => {
-  const { history, users, addUser } = props;
+const AddProduct = props => {
+  const { history, products, addtProduct } = props;
 
   const classes = useStyles();
 
@@ -188,23 +182,14 @@ const AddEmployee = props => {
     }));
   };
 
-  const handleAddEmployee = event => {
+  const handleAddProduct = event => {
     event.preventDefault();
-    let isEmailExists = false
-    if (users.length) {
-      isEmailExists = users.findIndex((obj) => obj.email.toLowerCase() === formState.values.email.toLowerCase()) >= 0 ? true : false
-    }
-    if (isEmailExists) {
-      alert('User exists with the given email id')
-    } else {
-      addUser({
-        ...formState.values,
-        password: '123456',
-        userType: 'employee',
-        policy: true,
-      })
-      history.push('/');
-    }
+    addtProduct({
+      id: products.length + 1,
+      ...formState.values,
+      isProductOfTheDEaey: false
+    })
+    history.push('/products');
   };
 
   const hasError = field =>
@@ -226,64 +211,64 @@ const AddEmployee = props => {
             <div className={classes.contentBody}>
               <form
                 className={classes.form}
-                onSubmit={handleAddEmployee}
+                onSubmit={handleAddProduct}
               >
                 <Typography
                   className={classes.title}
                   variant="h2"
                 >
-                  Add new employee
+                  Add new product
                 </Typography>
                 <Typography
                   color="textSecondary"
                   gutterBottom
                 >
-                  Use employee email to create new account
+                  Add new product into menu according to the need
                 </Typography>
                 <TextField
                   className={classes.textField}
-                  error={hasError('firstName')}
+                  error={hasError('productName')}
                   fullWidth
                   helperText={
-                    hasError('firstName') ? formState.errors.firstName[0] : null
+                    hasError('productName') ? formState.errors.productName[0] : null
                   }
-                  label="First name"
-                  name="firstName"
+                  label="Product name"
+                  name="productName"
                   onChange={handleChange}
                   type="text"
-                  value={formState.values.firstName || ''}
+                  value={formState.values.productName || ''}
                   variant="outlined"
                 />
                 <TextField
                   className={classes.textField}
-                  error={hasError('lastName')}
+                  error={hasError('quantity')}
                   fullWidth
                   helperText={
-                    hasError('lastName') ? formState.errors.lastName[0] : null
+                    hasError('quantity') ? formState.errors.quantity[0] : null
                   }
-                  label="Last name"
-                  name="lastName"
+                  label="Quantity"
+                  name="quantity"
                   onChange={handleChange}
                   type="text"
-                  value={formState.values.lastName || ''}
+                  value={formState.values.quantity || ''}
                   variant="outlined"
                 />
                 <TextField
                   className={classes.textField}
-                  error={hasError('email')}
+                  error={hasError('price')}
                   fullWidth
                   helperText={
-                    hasError('email') ? formState.errors.email[0] : null
+                    hasError('price') ? formState.errors.price[0] : null
                   }
-                  label="Email address"
-                  name="email"
+                  label="Price"
+                  name="price"
                   onChange={handleChange}
                   type="text"
-                  value={formState.values.email || ''}
+                  value={formState.values.price || ''}
                   variant="outlined"
                 />
                 <Button
-                  className={classes.AddEmployeeButton}
+                  className={classes.AddProductButton}
                   color="primary"
                   disabled={!formState.isValid}
                   fullWidth
@@ -291,7 +276,7 @@ const AddEmployee = props => {
                   type="submit"
                   variant="contained"
                 >
-                  Add Employee
+                  Add Product
                 </Button>
               </form>
             </div>
@@ -302,23 +287,23 @@ const AddEmployee = props => {
   );
 };
 
-AddEmployee.propTypes = {
+AddProduct.propTypes = {
   history: PropTypes.object
 };
 
 function mapStateToProps(state) {
   return {
-    users: state.users
+    products: state.products
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addUser: (user) => dispatch(addtUser(user)),
+    addtProduct: (product) => dispatch(addProduct(product)),
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(AddEmployee))
+)(withRouter(AddProduct))

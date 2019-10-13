@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -18,13 +19,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ProductsToolbar = props => {
-  const { className, ...rest } = props;
+  const { className, history } = props;
 
   const classes = useStyles();
 
+  const addProduct = () => {
+    history.push('/add-product')
+  }
+
   return (
     <div
-      {...rest}
       className={clsx(classes.root, className)}
     >
       <div className={classes.row}>
@@ -32,6 +36,7 @@ const ProductsToolbar = props => {
         <Button
           color="primary"
           variant="contained"
+          onClick={addProduct}
         >
           Add product
         </Button>
@@ -44,4 +49,4 @@ ProductsToolbar.propTypes = {
   className: PropTypes.string
 };
 
-export default ProductsToolbar;
+export default withRouter(ProductsToolbar);
