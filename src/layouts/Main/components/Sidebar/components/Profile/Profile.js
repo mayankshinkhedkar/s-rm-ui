@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography } from '@material-ui/core';
+import { utilityProj } from 'helpers';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,11 +27,21 @@ const Profile = props => {
 
   const classes = useStyles();
 
-  const user = {
-    name: 'Shen Zhi',
+  const [userState, setUserState] = useState({
+    name: "",
+    userType: "",
     avatar: '/images/avatars/avatar_11.png',
-    bio: 'Brain Director'
-  };
+  });
+
+  useEffect(() => {
+    const getLoggedInUser = utilityProj.getUserSession()
+
+    setUserState(userState => ({
+      ...userState,
+      name: `${(`${getLoggedInUser.firstName} ${getLoggedInUser.lastName}`).toUpperCase()}`,
+      userType: (getLoggedInUser.userType).toUpperCase()
+    }));
+  }, []);
 
   return (
     <div
@@ -41,16 +52,16 @@ const Profile = props => {
         alt="Person"
         className={classes.avatar}
         component={RouterLink}
-        src={user.avatar}
+        src={userState.avatar}
         to="/settings"
       />
       <Typography
         className={classes.name}
         variant="h4"
       >
-        {user.name}
+        {userState.name}
       </Typography>
-      <Typography variant="body2">{user.bio}</Typography>
+      <Typography variant="body2">{userState.userType}</Typography>
     </div>
   );
 };

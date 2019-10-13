@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,9 +41,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TotalUsers = props => {
-  const { className, ...rest } = props;
+  const { className, users, ...rest } = props;
 
   const classes = useStyles();
+
+  const totalEmp = users.filter(obj => obj.userType === 'employee').length
 
   return (
     <Card
@@ -62,9 +64,9 @@ const TotalUsers = props => {
               gutterBottom
               variant="body2"
             >
-              TOTAL USERS
+              TOTAL EMPLOYEES
             </Typography>
-            <Typography variant="h3">1,600</Typography>
+            <Typography variant="h3">{totalEmp}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
@@ -72,21 +74,6 @@ const TotalUsers = props => {
             </Avatar>
           </Grid>
         </Grid>
-        <div className={classes.difference}>
-          <ArrowUpwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            16%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
       </CardContent>
     </Card>
   );
@@ -96,4 +83,12 @@ TotalUsers.propTypes = {
   className: PropTypes.string
 };
 
-export default TotalUsers;
+function mapStateToProps(state) {
+  return {
+    users: state.users || []
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(TotalUsers)
