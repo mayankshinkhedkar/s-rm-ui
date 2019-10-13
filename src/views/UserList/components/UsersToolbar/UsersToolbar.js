@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -18,9 +19,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UsersToolbar = props => {
-  const { className } = props;
+  const { className, history } = props;
 
   const classes = useStyles();
+
+  const addEmployee = () => {
+    history.push('/add-employee')
+  }
 
   return (
     <div
@@ -31,8 +36,9 @@ const UsersToolbar = props => {
         <Button
           color="primary"
           variant="contained"
+          onClick={addEmployee}
         >
-          Add user
+          Add Employee
         </Button>
       </div>
     </div>
@@ -43,4 +49,4 @@ UsersToolbar.propTypes = {
   className: PropTypes.string
 };
 
-export default UsersToolbar;
+export default withRouter(UsersToolbar);

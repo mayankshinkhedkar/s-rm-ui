@@ -16,6 +16,7 @@ import {
   SignIn as SignInView,
   NotFound as NotFoundView
 } from './views';
+import AddEmployee from 'views/AddEmployee';
 
 const Routes = () => {
   return (
@@ -78,6 +79,12 @@ const Routes = () => {
         exact
         layout={MinimalLayout}
         path="/sign-in"
+      />
+      <RouteWithLayout
+        component={AddEmployee}
+        exact
+        layout={MainLayout}
+        path="/add-employee"
       />
       <RouteWithLayout
         component={NotFoundView}
