@@ -185,7 +185,7 @@ const AddProduct = props => {
   const handleAddProduct = event => {
     event.preventDefault();
     addtProduct({
-      id: products.length + 1,
+      id: products.length + Date.now(),
       ...formState.values,
       isProductOfTheDEaey: false
     })
