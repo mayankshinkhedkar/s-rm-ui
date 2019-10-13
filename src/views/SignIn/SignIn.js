@@ -11,6 +11,7 @@ import {
   Link,
   Typography
 } from '@material-ui/core';
+import { utilityProj } from 'helpers';
 
 const schema = {
   email: {
@@ -166,8 +167,10 @@ const SignIn = props => {
   const handleSignIn = event => {
     event.preventDefault();
     let isEmailExists = false
-    if (users.users.length) {
-      isEmailExists = users.users.findIndex((obj) => (obj.email.toLowerCase() === formState.values.email.toLowerCase() && obj.password === formState.values.password)) >= 0 ? true : false
+    let signInUser = users.filter((obj) => (obj.email.toLowerCase() === formState.values.email.toLowerCase() && obj.password === formState.values.password))
+    if (signInUser.length) {
+      isEmailExists = true
+      utilityProj.setUserSession(signInUser[0])
     }
     if (isEmailExists) {
       history.push('/dashboard');

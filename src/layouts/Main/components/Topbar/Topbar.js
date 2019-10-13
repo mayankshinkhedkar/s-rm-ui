@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Topbar = props => {
-  const { className, onSidebarOpen, ...rest } = props;
+  const { className, onSidebarOpen, signOut, ...rest } = props;
 
   const classes = useStyles();
 
@@ -53,6 +53,7 @@ const Topbar = props => {
           <IconButton
             className={classes.signOutButton}
             color="inherit"
+            onClick={signOut}
           >
             <InputIcon />
           </IconButton>

@@ -1,40 +1,20 @@
-import { ADD_USER, FETCHING_USER, FETCHING_USER_SUCCESS, FETCHING_USER_FAILURE } from '../constants'
+import { ADD_USER } from '../constants'
 
-const initialState = {
-  users: [],
-  isFetching: false,
-  error: false
-}
+let users = [{
+  firstName: "Jon",
+  lastName: "Von",
+  email: "jon.von@mailinator.com",
+  password: "jonvon",
+  userType: "admin",
+  policy: true,
+}]
 
-export default function usersReducer(state = initialState, action) {
+export default function usersReducer(state = users, action) {
   switch (action.type) {
     case ADD_USER:
-      let newUser = state.users;
-      newUser.push(action.data);
-      return {
-        ...state,
-        users: newUser,
-        isFetching: false,
-        error: false
-      }
-    case FETCHING_USER:
-      return {
-        ...state,
-        users: [],
-        isFetching: true
-      }
-    case FETCHING_USER_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        users: action.data
-      }
-    case FETCHING_USER_FAILURE:
-      return {
-        ...state,
-        isFetching: false,
-        error: true
-      }
+      let newUsers = state;
+      newUsers.push(action.data);
+      return newUsers
     default:
       return state
   }

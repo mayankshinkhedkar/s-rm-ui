@@ -194,8 +194,8 @@ const SignUp = props => {
   const handleSignUp = event => {
     event.preventDefault();
     let isEmailExists = false
-    if (users.users.length) {
-      isEmailExists = users.users.findIndex((obj) => obj.email.toLowerCase() === formState.values.email.toLowerCase()) >= 0 ? true : false
+    if (users.length) {
+      isEmailExists = users.findIndex((obj) => obj.email.toLowerCase() === formState.values.email.toLowerCase()) >= 0 ? true : false
     }
     if (isEmailExists) {
       alert('User exists with the given email id')
