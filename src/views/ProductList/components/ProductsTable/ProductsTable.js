@@ -40,7 +40,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductsTable = props => {
-  const { className, products, updateProductOfTheDay, isAdmin, searchProductVal } = props;
+  const { className, products, updateProductOfTheDay, isAdmin, searchProductVal, removeProduct } = props;
 
   const classes = useStyles();
 
