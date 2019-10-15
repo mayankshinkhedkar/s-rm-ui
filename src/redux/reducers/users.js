@@ -1,4 +1,4 @@
-import { ADD_USER } from '../constants'
+import { ADD_USER, REMOVE_USER } from '../constants'
 
 let users = [
   {
@@ -45,10 +45,20 @@ let users = [
 
 export default function usersReducer(state = users, action) {
   switch (action.type) {
+
     case ADD_USER:
+
       let newUsers = state;
       newUsers.push(action.data);
+
       return newUsers
+
+    case REMOVE_USER:
+
+      let newUpdatedUsers = state.filter(obj => obj.email !== action.data);
+
+      return newUpdatedUsers
+
     default:
       return state
   }

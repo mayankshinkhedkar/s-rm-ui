@@ -7,6 +7,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +18,8 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { removeUser } from 'redux/actions/userActions';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -36,7 +39,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const UsersTable = props => {
-  const { className, users } = props;
+  const { className, users, isAdmin, removeUser, searchUserVal } = props;
 
   const classes = useStyles();
 
@@ -52,7 +55,15 @@ const UsersTable = props => {
     setPage(0);
   };
 
-  const userList = users.filter(obj => obj.userType === 'employee')
+  let userList = users.filter(obj => obj.userType === 'employee')
+
+  if (searchUserVal.trim().length) {
+    userList = userList.filter(obj => {
+      let tempWord = `${obj.firstName.toLowerCase()} ${obj.lastName.toLowerCase()}`.trim()
+
+      return tempWord.indexOf(searchUserVal.trim().toLowerCase()) > -1
+    });
+  }
 
   return (
     <Card
@@ -67,9 +78,15 @@ const UsersTable = props => {
                   <TableCell>First Name</TableCell>
                   <TableCell>Last Name</TableCell>
                   <TableCell>Email</TableCell>
+                  {isAdmin && <TableCell>Delete</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
+                {
+                  userList.length < 1 && <TableRow>
+                    <TableCell>No Record Found</TableCell>
+                  </TableRow>
+                }
                 {userList.slice(rowsPerPage * page, rowsPerPage + page).map((user, index) => (
                   <TableRow
                     className={classes.tableRow}
@@ -87,6 +104,16 @@ const UsersTable = props => {
                       </div>
                     </TableCell>
                     <TableCell>{user.email}</TableCell>
+                    {
+                      isAdmin && <TableCell>
+                        <IconButton
+                          color="inherit"
+                          onClick={() => removeUser(user.email)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    }
                   </TableRow>
                 ))}
               </TableBody>
@@ -118,7 +145,13 @@ function mapStateToProps(state) {
     users: state.users || []
   }
 }
+function mapDispatchToProps(dispatch) {
+  return {
+    removeUser: (user) => dispatch(removeUser(user)),
+  }
+}
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(withRouter(UsersTable))

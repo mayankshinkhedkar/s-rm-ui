@@ -1,4 +1,4 @@
-import { ADD_PRODUCT, UPDATE_PRODUCT_OF_THE_DAY } from '../constants'
+import { ADD_PRODUCT, REMOVE_PRODUCT, UPDATE_PRODUCT_OF_THE_DAY } from '../constants'
 
 export function addProduct(data) {
   return {
@@ -10,6 +10,13 @@ export function addProduct(data) {
 export function updateProductOfTheDay(data) {
   return {
     type: UPDATE_PRODUCT_OF_THE_DAY,
+    data,
+  }
+}
+
+export function removeProduct(data) {
+  return {
+    type: REMOVE_PRODUCT,
     data,
   }
 }

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
+import { SearchInput } from 'components';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -15,11 +16,14 @@ const useStyles = makeStyles(theme => ({
   },
   spacer: {
     flexGrow: 1
+  },
+  searchInput: {
+    marginRight: theme.spacing(1)
   }
 }));
 
 const UsersToolbar = props => {
-  const { className, history } = props;
+  const { className, history, searchUser } = props;
 
   const classes = useStyles();
 
@@ -41,6 +45,13 @@ const UsersToolbar = props => {
           Add Employee
         </Button>
       </div>
+      <div className={classes.row}>
+        <SearchInput
+          className={classes.searchInput}
+          placeholder="Search user"
+          onChange={(e) => searchUser(e.target.value)}
+        />
+      </div>
     </div>
   );
 };
@@ -49,4 +60,4 @@ UsersToolbar.propTypes = {
   className: PropTypes.string
 };
 
-export default withRouter(UsersToolbar);
+export default withRouter(UsersToolbar)

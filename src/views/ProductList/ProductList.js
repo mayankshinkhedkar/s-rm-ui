@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 import { ProductsToolbar } from './components';
@@ -17,13 +17,22 @@ const useStyles = makeStyles(theme => ({
 const ProductList = () => {
   const classes = useStyles();
 
+  const [searchProductVal, setSearchProductVal] = useState('');
+
+  const searchProduct = (val) => {
+    setSearchProductVal(val)
+  }
+
   let getLoggedInUser = utilityProj.getUserSession()
 
   return (
     <div className={classes.root}>
-      {getLoggedInUser.userType === 'admin' && <ProductsToolbar />}
+      {getLoggedInUser.userType === 'admin' && <ProductsToolbar searchProduct={searchProduct} />}
       <div className={classes.content}>
-        <ProductsTable isAdmin={getLoggedInUser.userType === 'admin' ? true : false} />
+        <ProductsTable
+          isAdmin={getLoggedInUser.userType === 'admin' ? true : false}
+          searchProductVal={searchProductVal}
+        />
       </div>
     </div>
   );

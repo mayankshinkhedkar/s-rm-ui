@@ -1,4 +1,4 @@
-import { ADD_PRODUCT, UPDATE_PRODUCT_OF_THE_DAY } from '../constants'
+import { ADD_PRODUCT, UPDATE_PRODUCT_OF_THE_DAY, REMOVE_PRODUCT } from '../constants'
 
 let products = [
   {
@@ -63,6 +63,12 @@ export default function productsReducer(state = products, action) {
       newProductOfDay[getProductIndex].isProductOfTheDEaey = true
 
       return newProductOfDay
+
+    case REMOVE_PRODUCT:
+
+      let newUpdatedProducts = state.filter(obj => obj.id !== action.data);
+
+      return newUpdatedProducts
 
     default:
       return state

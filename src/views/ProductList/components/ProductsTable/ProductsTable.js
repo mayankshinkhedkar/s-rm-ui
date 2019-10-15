@@ -8,6 +8,7 @@ import {
   CardActions,
   CardContent,
   Checkbox,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -18,7 +19,8 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { updateProductOfTheDay } from 'redux/actions/productActions';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { updateProductOfTheDay, removeProduct } from 'redux/actions/productActions';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -38,7 +40,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ProductsTable = props => {
-  const { className, products, updateProductOfTheDay, isAdmin } = props;
+  const { className, products, updateProductOfTheDay, isAdmin, searchProductVal } = props;
 
   const classes = useStyles();
 
@@ -60,6 +62,16 @@ const ProductsTable = props => {
     updateProductOfTheDay(id);
   };
 
+  let productsList = products
+
+  if (searchProductVal.trim().length) {
+    productsList = productsList.filter(obj => {
+      let tempWord = obj.productName.toLowerCase().trim()
+
+      return tempWord.indexOf(searchProductVal.trim().toLowerCase()) > -1
+    });
+  }
+
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -74,10 +86,16 @@ const ProductsTable = props => {
                   <TableCell>Product Name</TableCell>
                   <TableCell>Quantity</TableCell>
                   <TableCell>Price</TableCell>
+                  {isAdmin && <TableCell>Delete</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products.slice(rowsPerPage * page, rowsPerPage + page).map((product, index) => (
+                {
+                  productsList.length < 1 && <TableRow>
+                    <TableCell>No Record Found</TableCell>
+                  </TableRow>
+                }
+                {productsList.slice(rowsPerPage * page, rowsPerPage + page).map((product, index) => (
                   <TableRow
                     className={classes.tableRow}
                     hover
@@ -103,6 +121,16 @@ const ProductsTable = props => {
                       </div>
                     </TableCell>
                     <TableCell>{product.price}</TableCell>
+                    {
+                      isAdmin && <TableCell>
+                        <IconButton
+                          color="inherit"
+                          onClick={() => removeProduct(product.id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    }
                   </TableRow>
                 ))}
               </TableBody>
@@ -138,6 +166,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     updateProductOfTheDay: (user) => dispatch(updateProductOfTheDay(user)),
+    removeProduct: (user) => dispatch(removeProduct(user)),
   }
 }
 

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
+import { SearchInput } from 'components';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -15,11 +16,14 @@ const useStyles = makeStyles(theme => ({
   },
   spacer: {
     flexGrow: 1
+  },
+  searchInput: {
+    marginRight: theme.spacing(1)
   }
 }));
 
 const ProductsToolbar = props => {
-  const { className, history } = props;
+  const { className, history, searchProduct } = props;
 
   const classes = useStyles();
 
@@ -40,6 +44,13 @@ const ProductsToolbar = props => {
         >
           Add product
         </Button>
+      </div>
+      <div className={classes.row}>
+        <SearchInput
+          className={classes.searchInput}
+          placeholder="Search Product"
+          onChange={(e) => searchProduct(e.target.value)}
+        />
       </div>
     </div>
   );
